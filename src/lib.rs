@@ -1,7 +1,9 @@
 /// The main nested sampler function.
-use rand::Rng
+use crate::samplers::traits::{Prior, LRPS};
 
-fn nested_sampler<S: LPRS>(priors: Vec<Box<Prior>>, n_live: usize, sampler: &mut S) -> (f64, Vec<f64>, Vec<f64>, f64) {
+pub mod samplers;
+
+fn nested_sampler<S: LRPS>(priors: Vec<Box<dyn Prior>>, n_live: usize, sampler: &mut S) -> (f64, Vec<f64>, Vec<f64>, f64) {
     /// Run the nested sampler for a given likelihood-restricted prior sampler 
     /// and set of priors.
 
