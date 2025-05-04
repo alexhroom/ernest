@@ -1,11 +1,34 @@
 /// The main nested sampler function.
-use crate::samplers::traits::{Prior, LRPS};
+use crate::utils::lrps::LRPS;
+use crate::utils::priors::Prior;
 use rand::Rng;
 
-pub mod samplers;
+pub mod utils;
 
 /// Run the nested sampler for a given likelihood-restricted prior sampler
 /// and set of priors.
+///
+/// Parameters
+/// priors : Vec<Box<dyn Prior>>
+///     A vector of the priors for each dimension.
+/// n_live : usize
+///     The number of live points.
+/// log_likelihood : Fn(Vec<f64>) -> f64
+///     The log-likelihood function to use.
+/// tolerance : f64
+///     The maximum tolerance before ending the sampler.
+/// sampler : dyn LRPS
+///     The sampler object for likelihood-restricted posterior sampling.
+///
+/// Returns
+/// -------
+/// log_z : f64
+///     The final value for the log-evidence.
+/// all_param_vals : Vec<Vec<f64>>
+///     The full set of parameter values sampled.
+/// all_log_likelihoods : Vec<f64>
+///     The full set of log-likelihoods for values in all_param_vals.
+///
 fn nested_sampler<S: LRPS>(
     priors: Vec<Box<dyn Prior>>,
     n_live: usize,
@@ -97,3 +120,4 @@ fn nested_sampler<S: LRPS>(
     // add remaining live points to logZ and H
     (log_z, all_param_vals, all_log_likelihoods, entropy)
 }
+
